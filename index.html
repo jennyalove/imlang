@@ -77,7 +77,7 @@ button:hover{background:#f4f5f7}
 <div class="hdr">
   <div>
     <div style="font-size:15px;font-weight:700;color:#1a5fa8">🏘 임장노트</div>
-    <div style="font-size:10px;color:#8a8f9a">캡처 붙여넣기·파일업로드 → AI 자동입력 | 매물번호 → 네이버페이 바로가기</div>
+    <div style="font-size:10px;color:#8a8f9a">매물 텍스트 붙여넣기 → AI 자동입력 | 매물번호 → 네이버페이 바로가기</div>
   </div>
   <div class="hdr-r">
     <span id="totalTxt" style="font-size:10px;color:#8a8f9a"></span>
@@ -143,14 +143,7 @@ function calcR(p,t){
   return[];
 }
 
-document.addEventListener('paste',async e=>{
-  if(document.activeElement&&(document.activeElement.id==='pasteBox'||document.activeElement.id==='txtPaste'))return;
-  const ii=[...(e.clipboardData?.items||[])].filter(i=>i.type.startsWith('image/'));
-  if(!ii.length)return;
-  if(!document.getElementById('aiBtn')){newForm();await new Promise(r=>setTimeout(r,120));}
-  for(const i of ii)await addImg(i.getAsFile());
-  updBtn();
-});
+/* image paste disabled */
 
 function setFt(m){ft=m;['all','done','not'].forEach(k=>document.getElementById('ft-'+k).classList.toggle('on',k===m));renderList();}
 
@@ -208,12 +201,12 @@ async function onImgPaste(e){
 }
 function updBtn(){
   const btn=document.getElementById('aiBtn');
-  const txt=(document.getElementById('txtPaste')?.value||'').trim();
+  const txt=[(document.getElementById('txtPaste')?.value||''),(document.getElementById('txtPaste2')?.value||'')].map(z=>z.trim()).filter(Boolean).join('\n\n');
   if(btn)btn.disabled=imgs.length===0&&txt.length<5;
 }
 
 async function runAI(){
-  const txt=(document.getElementById('txtPaste')?.value||'').trim();
+  const txt=[(document.getElementById('txtPaste')?.value||''),(document.getElementById('txtPaste2')?.value||'')].map(z=>z.trim()).filter(Boolean).join('\n\n');
   const hasI=imgs.length>0,hasT=txt.length>=5;
   if(!hasI&&!hasT)return;
   const btn=document.getElementById('aiBtn'),st=document.getElementById('aiSt');
@@ -259,16 +252,11 @@ function fHTML(d){
   d=d||{};
   return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+
   '<div>'+
-  '<div class="card"><div class="ch">📸 이미지 / 텍스트 자동입력</div><div class="cb">'+
-    '<div class="f"><label class="lb">① Ctrl+V 또는 우클릭→붙여넣기 (이미지)</label>'+
-    '<textarea id="pasteBox" class="paste-box" readonly onclick="this.removeAttribute(\'readonly\')" onblur="this.setAttribute(\'readonly\',\'\')" onpaste="onImgPaste(event);this.value=\'\'" placeholder="🖼  여기 클릭 후 Ctrl+V 또는 우클릭→붙여넣기&#10;그림판 캡처 이미지를 붙여넣으세요"></textarea></div>'+
-    '<div class="f"><label class="lb">② 파일 업로드 (최대 5장)</label>'+
-    '<label style="display:flex;align-items:center;gap:8px;padding:7px 10px;border:1.5px dashed #e0e3e9;border-radius:6px;cursor:pointer;font-size:11px;color:#8a8f9a">'+
-    '<input type="file" accept="image/*" multiple onchange="[...event.target.files].forEach(f=>addImg(f))" style="display:none;width:auto">'+
-    '<span style="font-size:16px">📁</span><b style="color:#1a5fa8">클릭해서 파일 선택</b>&nbsp;또는 드래그</label></div>'+
-    '<div class="prev-wrap" id="prevs"></div>'+
-    '<div class="f"><label class="lb">③ 텍스트 붙여넣기 (매물 내용 드래그 복사 후)</label>'+
-    '<textarea id="txtPaste" oninput="updBtn()" style="min-height:52px;max-height:80px" placeholder="매물 정보 텍스트를 여기에 붙여넣으세요..."></textarea></div>'+
+  '<div class="card"><div class="ch">📝 텍스트 자동입력</div><div class="cb">'+
+    '<div class="f"><label class="lb">① 매물 정보 붙여넣기 (1차 드래그 · 면적/층/방향/관리비 등)</label>'+
+    '<textarea id="txtPaste" oninput="updBtn()" style="min-height:90px;max-height:200px" placeholder="네이버 매물의 정보 표를 드래그·복사해서 붙여넣으세요..."></textarea></div>'+
+    '<div class="f"><label class="lb">② 매물설명 붙여넣기 (2차 드래그 · 상세설명, 선택)</label>'+
+    '<textarea id="txtPaste2" oninput="updBtn()" style="min-height:90px;max-height:200px" placeholder="매물설명 영역을 드래그·복사해서 붙여넣으세요 (없으면 비워두세요)..."></textarea></div>'+
     '<div style="display:flex;gap:8px;align-items:center">'+
     '<button class="ai-btn" id="aiBtn" onclick="runAI()" disabled>✦ AI 자동입력</button>'+
     '<span id="aiSt" style="font-size:11px"></span></div>'+
