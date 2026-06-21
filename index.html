@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>임장노트 | 박신영 실장</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Apple SD Gothic Neo','Malgun Gothic','Noto Sans KR',sans-serif}
+body{background:#f4f5f7;color:#1a1c20;font-size:13px;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+input,select,textarea{font-size:12px;padding:5px 8px;border:1px solid #e0e3e9;border-radius:6px;background:#f4f5f7;color:#1a1c20;width:100%;outline:none;font-family:inherit}
+input:focus,select:focus,textarea:focus{border-color:#1a5fa8;background:#fff}
+textarea{resize:vertical;line-height:1.7}
+button{font-family:inherit;font-size:12px;padding:5px 12px;border:1px solid #e0e3e9;border-radius:6px;background:#fff;color:#1a1c20;cursor:pointer}
+button:hover{background:#f4f5f7}
+.hdr{background:#fff;border-bottom:1px solid #e0e3e9;padding:8px 16px;display:flex;align-items:center;gap:10px;height:46px;flex-shrink:0}
+.hdr-r{margin-left:auto;display:flex;gap:6px;align-items:center}
+.btn-pri{background:#1a5fa8;color:#fff;border:none;font-weight:700;font-size:13px;padding:7px 16px;border-radius:6px}
+.btn-ok{background:#e8f5ee;color:#16733d;border-color:#16733d;font-weight:700;font-size:13px;padding:7px 16px}
+.layout{display:grid;grid-template-columns:260px 1fr;flex:1;min-height:0;overflow:hidden}
+.sb{background:#fff;border-right:1px solid #e0e3e9;display:flex;flex-direction:column;overflow:hidden}
+.sb-top{padding:8px 10px;border-bottom:1px solid #e0e3e9;display:flex;flex-direction:column;gap:6px}
+.ftabs{display:flex;gap:4px}
+.ft{font-size:10px;padding:2px 8px;border-radius:10px;border:1px solid #e0e3e9;background:#f4f5f7;color:#8a8f9a;cursor:pointer;font-family:inherit}
+.ft.on{background:#1a5fa8;color:#fff;border-color:#1a5fa8}
+.sb-list{overflow-y:auto;flex:1}
+.si{padding:9px 10px;border-bottom:1px solid #e0e3e9;display:grid;grid-template-columns:1fr 38px;gap:4px;cursor:pointer;border-left:2px solid transparent;align-items:start}
+.si:hover{background:#eaf1fb}
+.si.on{background:#eaf1fb;border-left-color:#1a5fa8}
+.si-del{font-size:11px;color:#8a8f9a;background:none;border:none;padding:1px 4px;cursor:pointer;font-family:inherit}
+.si-del:hover{color:#c0392b}
+.ibox{width:36px;height:36px;border:1.5px solid #e0e3e9;border-radius:6px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer}
+.ibox:hover{border-color:#16733d}
+.ibox.done{border-color:#16733d;background:#e8f5ee}
+.main-body{flex:1;overflow-y:auto;padding:12px 16px}
+.card{background:#fff;border-radius:8px;border:1px solid #e0e3e9;overflow:hidden;margin-bottom:10px}
+.ch{padding:8px 13px;font-size:10px;font-weight:700;color:#8a8f9a;border-bottom:1px solid #e0e3e9;background:#f4f5f7}
+.cb{padding:12px 13px;display:flex;flex-direction:column;gap:8px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.f{flex:1;min-width:85px;display:flex;flex-direction:column;gap:3px}
+.f.w2{flex:2}.f.sm{min-width:58px;flex:0.65}
+.lb{font-size:10px;font-weight:700;color:#8a8f9a}
+.paste-box{width:100%;height:60px;padding:8px 12px;border:2px dashed #1a5fa8;border-radius:7px;background:#eaf1fb;font-size:11px;font-weight:700;color:#1a5fa8;text-align:center;line-height:1.8;cursor:pointer;resize:none;font-family:inherit}
+.paste-box:focus{border-style:solid;outline:none;background:#fff}
+.ai-btn{background:linear-gradient(135deg,#1a5fa8,#2471c8);color:#fff;border:none;font-size:13px;font-weight:700;padding:9px 20px;border-radius:6px;cursor:pointer;font-family:inherit}
+.ai-btn:disabled{background:#e0e3e9;color:#8a8f9a;cursor:not-allowed}
+.prev-wrap{display:flex;gap:6px;flex-wrap:wrap}
+.prev-i{position:relative}
+.prev-i img{width:62px;height:46px;object-fit:cover;border-radius:4px;border:1px solid #e0e3e9}
+.prev-del{position:absolute;top:-4px;right:-4px;width:14px;height:14px;background:#c0392b;color:#fff;border-radius:50%;font-size:9px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.prop-name{font-size:18px;font-weight:700;line-height:1.3;margin-bottom:5px}
+.prop-price{font-size:17px;font-weight:700;color:#1a5fa8;margin-bottom:8px}
+.ic-grid{display:grid;grid-template-columns:1fr 1fr}
+.ic{padding:8px 13px;border-bottom:1px solid #e0e3e9;border-right:1px solid #e0e3e9}
+.ic.ev{border-right:none}
+.ic-lb{font-size:10px;color:#8a8f9a;margin-bottom:3px}
+.ic-val{font-size:13px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:4px}
+.cp{font-size:10px;padding:1px 6px;border-radius:4px;border:1px solid #e0e3e9;color:#8a8f9a;cursor:pointer;flex-shrink:0;background:#fff;font-family:inherit}
+.cp:hover{background:#eaf1fb;color:#1a5fa8;border-color:#1a5fa8}
+.sec{padding:6px 13px;font-size:10px;font-weight:700;color:#8a8f9a;background:#f4f5f7;border-top:1px solid #e0e3e9}
+.lnk{display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:6px;font-size:12px;font-weight:700;text-decoration:none;border:1px solid}
+.lnk-n{background:#eaf1fb;color:#1a5fa8;border-color:#c3d9f5}
+.lnk-p{background:#fff3ed;color:#d4580a;border-color:#ffd4b8}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#e0e3e9;border:1px solid #e0e3e9;border-radius:6px;overflow:hidden;margin-top:8px}
+.cr{background:#fff;padding:8px 10px}
+.cr.tot{background:#eaf1fb}
+.cr-lb{font-size:10px;color:#8a8f9a;margin-bottom:2px}
+.cr.tot .cr-lb{color:#1a5fa8;font-weight:700}
+.cr-val{font-size:13px;font-weight:700}
+.cr.tot .cr-val{color:#1a5fa8;font-size:14px}
+.cr-sub{font-size:10px;color:#8a8f9a}
+.tag{font-size:11px;background:#f4f5f7;padding:2px 9px;border-radius:10px;border:1px solid #e0e3e9;color:#8a8f9a}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:400px;gap:10px;color:#8a8f9a;text-align:center}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#e0e3e9;border-radius:2px}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div style="font-size:15px;font-weight:700;color:#1a5fa8">🏘 임장노트</div>
+    <div style="font-size:10px;color:#8a8f9a">캡처 붙여넣기·파일업로드 → AI 자동입력 | 매매물번호 → 네이버페이 바로가기</div>
+  </div>
+  <div class="hdr-r">
+    <span id="totalTxt" style="font-size:10px;color:#8a8f9a"></span>
+    <button onclick="exportCSV()">📥 CSV</button>
+    <button class="btn-pri" onclick="newForm()">＋ 새 매매물</button>
+  </div>
+</div>
+<div class="layout">
+  <div class="sb">
+    <div class="sb-top">
+      <input id="sbQ" placeholder="단지명·주소·매물번호 검색..." oninput="renderList()" oncompositionend="renderList()">
+      <div class="ftabs">
+        <span class="ft on" id="ft-all" onclick="setFt('all')">전체 <b id="c-all">0</b></span>
+        <span class="ft" id="ft-done" onclick="setFt('done')">완료 <b id="c-done">0</b></span>
+        <span class="ft" id="ft-not" onclick="setFt('not')">미완 <b id="c-not">0</b></span>
+      </div>
+    </div>
+    <div class="sb-list" id="sbList">
+      <div style="padding:24px;text-align:center;color:#8a8f9a;font-size:11px;line-height:1.9">저장된 매물이 없어요<br>＋ 새 매물을 추가해보세요</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;overflow:hidden;flex:1">
+    <div class="main-body" id="mainBody">
+      <div class="empty">
+        <div style="font-size:40px">🏘</div>
+        <div style="font-weight:700;font-size:14px;color:#1a1c20">임장 매물을 기록하세요</div>
+        <div style="font-size:12px;line-height:1.9">캡처 후 <b>Ctrl+V</b> 붙여넣기<br>또는 파일 업로드 → AI 자동입력</div>
+        <button class="btn-pri" onclick="newForm()" style="margin-top:6px">＋ 새 매물 추가</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const SYS=`당신은 네이버 부동산 매물 화면에서 정보를 추출하는 전문가입니다.
+이미지 또는 텍스트를 분석해서 아래 JSON만 출력하세요. 다른 설명 없이 JSON만:
+{"no":"매물번호","name":"단지명 동호수","addr":"주소","tradeType":"매매/전세/월세","price":"만원단위숫자","priceStr":"표시용","depositStr":"보증금표시","area":"공급면적㎡","areaPyung":"공급평수","areaExcl":"전용면적㎡","areaExclPyung":"전용평수","floor":"해당층","totalFloor":"총층","direction":"방향","room":"방수","bath":"욕실수","parking":"주차","manage":"관리비","moveIn":"입주가능일","features":"매물특징","desc":"매물설명줄바꿈구분","structureType":"현관구조","heatType":"난방","agentName":"중개사무소명","agentTel":"전화번호","agentPerson":"담당자"}`;
+
+let saved=[],selIdx=-1,ft='all',imgs=[];
+try{saved=JSON.parse(localStorage.getItem('imlang_v10')||'[]')}catch(e){}
+
+function sv(){try{localStorage.setItem('imlang_v10',JSON.stringify(saved))}catch(e){}}
+function fw(v){if(!v)return'';const e=Math.floor(v/10000),m=Math.round(v%10000);if(e>0&&m>0)return e+'억 '+m.toLocaleString()+'만원';if(e>0)return e+'억원';return Math.round(v).toLocaleString()+'만원';}
+function nl(no){return'https://new.land.naver.com/articles/'+no}
+function pl(no){return'https://land.naver.com/info/articleGallery.naver?startImage=Y&atclNo='+no+'&isGroupArticle=N&imageId='+no}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function escj(s){return String(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,'\\n')}ction calcR(p,t){
+  if(!p)return[];
+  if(t==='매매'){
+    let r=0.4,lim=0;
+    if(p<5000){r=0.6;lim=25}else if(p<20000){r=0.5;lim=80}else if(p<90000){r=0.4}else if(p<120000){r=0.5}else{r=0.9}
+    let c=p*r/100;if(lim&&c>lim)c=lim;
+    const ar=p<=60000?1:p<=90000?2:3,acq=p*ar/100,edu=p*0.3/100,rur=ar>=2?p*0.2/100:0,prop=p*0.65*0.25/100;
+    return[{l:'중개보수 상한',v:c,s:'요율'+r+'%'+(lim?'/한도'+lim+'만':'')},{l:'중개보수+VAT',v:c*1.1,s:'VAT10%포함'},{l:'취득세('+ar+'%)+교육세',v:acq+edu+rur,s:'취득세'+fw(acq)},{l:'재산세 추정',v:prop,s:'공시가기준'},{l:'총 부대비용',v:c*1.1+acq+edu+rur,s:'',tot:true}];
+  }
+  if(t==='전세'){
+    let r=0.3,lim=0;
+    if(p<5000){r=0.5;lim=20}else if(p<10000){r=0.4;lim=30}else if(p<30000){r=0.3}else if(p<60000){r=0.4}else{r=0.8}
+    let c=p*r/100;if(lim&&c>lim)c=lim;
+    return[{l:'중개보수 상한',v:c,s:'요율'+r+'%'+(lim?'/한도'+lim+'만':'')},{l:'중개보수+VAT',v:c*1.1,s:'',tot:true}];
+  }
+  return[];
+}
+
+document.addEventListener('paste',async e=>{
+  if(document.activeElement&&(document.activeElement.id==='pasteBox'||document.activeElement.id==='txtPaste'))return;
+  const ii=[...(e.clipboardData?.items||[])].filter(i=>i.type.startsWith('image/'));
+  if(!ii.length)return;
+  if(!document.getElementById('aiBtn')){newForm();await new Promise(r=>setTimeout(r,120));}
+  for(const i of ii)await addImg(i.getAsFile());
+  updBtn();
+});
+
+function setFt(m){ft=m;['all','done','not'].forEach(k=>document.getElementById('ft-'+k).classList.toggle('on',k===m));renderList();}
+
+function renderList(){
+  const q=(document.getElementById('sbQ')?.value||'').toLowerCase();
+  const w=document.getElementById('sbList');
+  const list=saved.filter(s=>(!q||(s.no||'').includes(q)||(s.name||'').toLowerCase().includes(q)||(s.addr||'').toLowerCase().includes(q))&&(ft==='all'||(ft==='done'&&s.imlang)||(ft==='not'&&!s.imlang)));
+  document.getElementById('c-all').textContent=saved.length;
+  document.getElementById('c-done').textContent=saved.filter(s=>s.imlang).length;
+  document.getElementById('c-not').textContent=saved.filter(s=>!s.imlang).length;
+  document.getElementById('totalTxt').textContent=saved.length?'총 '+saved.length+'개':'';
+  if(!list.length){w.innerHTML='<div style="padding:20px;text-align:center;color:#8a8f9a;font-size:11px">'+(q||ft!=='all'?'해당 매물 없음':'저장된 매물이 없어요')+'</div>';return;}
+  w.innerHTML=list.map(s=>{
+    const idx=saved.indexOf(s),act=idx===selIdx;
+    return '<div class="si'+(act?' on':'')+'" onclick="selItem('+idx+')">'+'<div>'+'<div style="font-size:9px;color:#8a8f9a;font-weight:600">'+(s.no?'No.'+s.no:'')+' '+(s.date?'· '+s.date:'')+'</div>'+'<div style="font-size:11px;font-weight:700;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">'+esc(s.name||'(이름없음)')+'</div>'+'<div style="font-size:11px;color:#1a5fa8;font-weight:700">'+(s.tradeType&&s.priceStr?esc(s.tradeType+' '+s.priceStr):'')+'</div>'+(s.addr?'<div style="font-size:9px;color:#8a8f9a">'+esc(s.addr)+'</div>':'')+  '</div>'+'<div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">'+'<button class="si-del" onclick="event.stopPropagation();delItem('+idx+')">✕</button>'+'<div class="ibox'+(s.imlang?' done':'')+'" onclick="event.stopPropagation();togIml('+idx+')" title="임장완료 토글">'+'<div style="font-size:15px;color:#16733d;font-weight:700;height:18px;display:flex;align-items:center">'+(s.imlang?'✓':'')+'</div>'+'<div style="font-size:9px;font-weight:700;color:'+(s.imlang?'#16733d':'#8a8f9a')+'">'+(s.imlang?'완료':'임장')+'</div>'+'</div>'+'</div>'+'</div>';
+  }).join('');
+}
+
+function selItem(idx){selIdx=idx;renderList();showDetail(saved[idx]);}
+function togIml(idx){saved[idx].imlang=!saved[idx].imlang;sv();renderList();if(selIdx===idx)showDetail(saved[idx]);}
+function delItem(idx){if(!confirm('"'+(saved[idx]?.name||'이 매물')+'" 삭제?'))return;saved.splice(idx,1);sv();if(selIdx===idx){selIdx=-1;showEmpty();}else if(selIdx>idx)selIdx--;renderList();}
+
+async function f2b(f){return new Promise(r=>{const rd=new FileReader();rd.onload=e=>r(e.target.result);rd.readAsDataURL(f);})}
+async function addImg(file){
+  if(imgs.length>=5)return;
+  const full=await f2b(file);
+  imgs.push({b64:full.split(',')[1],mt:file.type||'image/png',prev:full});
+  renderPrevs();updBtn();
+}
+function renderPrevs(){
+  const w=document.getElementById('prevs');if(!w)return;
+  w.innerHTML=imgs.map((img,i)=>'<div class="prev-i"><img src="'+img.prev+'"><button class="prev-del" onclick="rmImg('+i+')">✕</button></div>').join('');
+}
+function rmImg(i){imgs.splice(i,1);renderPrevs();updBtn();}
+async function onImgPaste(e){
+  const ii=[...(e.clipboardData?.items||[])].filter(i=>i.type.startsWith('image/'));
+  if(!ii.length)return;
+  e.preventDefault();
+  for(const i of ii)await addImg(i.getAsFile());
+  e.target.value='';
+}
+function updBtn(){
+  const btn=document.getElementById('aiBtn');
+  const txt=(document.getElementById('txtPaste')?.value||'').trim();
+  if(btn)btn.disabled=imgs.length===0&&txt.length<5;
+}
+
+async function runAI(){
+  const txt=(document.getElementById('txtPaste')?.value||'').trim();
+  const hasI=imgs.length>0,hasT=txt.length>=5;
+  if(!hasI&&!hasT)return;
+  const btn=document.getElementById('aiBtn'),st=document.getElementById('aiSt');
+  btn.disabled=true;st.textContent='⏳ 분석 중...';st.style.color='#8a8f9a';
+  const content=[];
+  imgs.forEach(img=>content.push({type:'image',source:{type:'base64',media_type:img.mt,data:img.b64}}));
+  content.push({type:'text',text:hasT?(hasI?'이미지와 함께 ':'')+'아래 텍스트도 참고해서 매물 정보를 JSON으로 추출해주세요:\n\n'+txt:'이미지 '+imgs.length+'장을 분석해서 매물 정보를 JSON으로 추출해주세요.'});
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,system:SYS,messages:[{role:'user',content}]})});
+    if(!res.ok){const d=await res.json().catch(()=>({}));throw new Error(d.error?.message||'오류 '+res.status);}
+    const data=await res.json();
+    const text=(data.content||[]).map(c=>c.text||'').join('');
+    const m=text.match(/\{[\s\S]*\}/);
+    if(!m)throw new Error('정보를 읽지 못했어요');
+    fillForm(JSON.parse(m[0]));
+    st.textContent='✅ 완료! 확인 후 수정하세요';st.style.color='#16733d';
+  }catch(e){st.textContent='❌ '+e.message;st.style.color='#c0392b';}
+  btn.disabled=false;updBtn();
+}
+
+function fillForm(d){
+  const set=(id,v)=>{const el=document.getElementById(id);if(el&&v!=null&&v!=='')el.value=v;};
+  set('f_no',d.no);set('f_name',d.name);set('f_addr',d.addr);
+  set('f_ps',d.priceStr);set('f_ds',d.depositStr);
+  set('f_ar',d.area);set('f_ap',d.areaPyung);set('f_ae',d.areaExcl);set('f_aep',d.areaExclPyung);
+  set('f_fl',d.floor);set('f_tfl',d.totalFloor);set('f_dir',d.direction);
+  if(d.room||d.bath)set('f_rb',(d.room||'')+'/'+(d.bath||''));
+  set('f_pk',d.parking);set('f_mg',d.manage);set('f_mv',d.moveIn);
+  set('f_ft',d.features);set('f_desc',d.desc);set('f_st',d.structureType);set('f_ht',d.heatType);
+  set('f_ag',d.agentName);set('f_at',d.agentTel);set('f_ap2',d.agentPerson);
+  if(d.tradeType){const s=document.getElementById('f_tt');if(s)for(let o of s.options)if(o.value===d.tradeType){o.selected=true;break;}}
+  if(d.no){const no=String(d.no).replace(/\D/g,'');set('f_no',no);updNL(no);}
+  if(d.price){const el=document.getElementById('c_price');if(el){el.value=d.price;calcAll();}}
+}
+function updNL(no){const l=document.getElementById('noLink');if(l){if(no&&no.length>=6){l.href=nl(no);l.style.display='inline';}else l.style.display='none';}}
+
+function newForm(){selIdx=-1;imgs=[];renderList();document.getElementById('mainBody').innerHTML=fHTML();}
+function editItem(idx){selIdx=idx;imgs=[];document.getElementById('mainBody').innerHTML=fHTML(saved[idx]);if(saved[idx].price){document.getElementById('c_price').value=saved[idx].price;calcAll();}if(saved[idx].no)updNL(saved[idx].no);}
+function cancelForm(){if(selIdx>=0)showDetail(saved[selIdx]);else showEmpty();}
+function showEmpty(){document.getElementById('mainBody').innerHTML='<div class="empty"><div style="font-size:40px">🏘</div><div style="font-weight:700;font-size:14px;color:#1a1c20">임장 매물을 기록하세요</div><div style="font-size:12px;line-height:1.9">캡처 후 <b>Ctrl+V</b> 붙여넣기<br>또는 파일 업로드 → AI 자동입력</div><button class="btn-pri" onclick="newForm()" style="margin-top:6px">＋ 새 매물 추가</button></div>';}
+
+function fHTML(d){
+  d=d||{};
+  return '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+'<div>'+'<div class="card"><div class="ch">📸 이미지 / 텍스트 자동입력</div><div class="cb">'+'<div class="f"><label class="lb">① Ctrl+V 또는 우클릭→붙여넣기 (이미지)</label>'+'<textarea id="pasteBox" class="paste-box" readonly onclick="this.removeAttribute(\'readonly\')" onblur="this.setAttribute(\'readonly\',\'\')" onpaste="onImgPaste(event);this.value=\'\'"></textarea></div>'+'<div class="f"><label class="lb">② 파일 업로드 (최대 5장)</label>'+'<label style="display:flex;align-items:center;gap:8px;padding:7px 10px;border:1.5px dashed #e0e3e9;border-radius:6px;cursor:pointer;font-size:11px;color:#8a8f9a">'+'<input type="file" accept="image/*" multiple onchange="[...event.target.files].forEach(f=>addImg(f))" style="display:none;width:auto">'+'<span style="font-size:16px">📁</span><b style="color:#1a5fa8">클릭해서 파일 선택</b>&nbsp;또는 드래그</label></div>'+'<div class="prev-wrap" id="prevs"></div>'+'<div class="f"><label class="lb">③ 텍스트 붙여넣기</label>'+'<textarea id="txtPaste" oninput="updBtn()" style="min-height:52px;max-height:80px" placeholder="매물 정보 텍스트..."></textarea></div>'+'<div style="display:flex;gap:8px;align-items:center">'+'<button class="ai-btn" id="aiBtn" onclick="runAI()" disabled>✦ AI 자동입력</button>'+'<span id="aiSt" style="font-size:11px"></span></div>'+'</div></div>'+'<div class="card"><div class="ch">📌 기본정보</div><div class="cb">'+'<div class="row">'+'<div class="f" style="max-width:150px"><label class="lb">매물번호 <a id="noLink" href="#" target="_blank" style="color:#1a5fa8;font-size:10px;display:none">↗네이버</a></label>'+'<input id="f_no" value="'+esc(d.no||'')+'" placeholder="선택사항" oninput="updNL(this.value.replace(/\\D/g,\'\')"></div>'+'<div class="f sm"><label class="lb">거래유형</label>'+'<select id="f_tt">'+['매매','전세','월세','단기'].map(t=>'<option'+(d.tradeType===t?' selected':'')+'>'+t+'</option>').join('')+'</select></div>'+'</div>'+'<div class="f"><label class="lb">단지명 / 동호수 *</label><input id="f_name" value="'+esc(d.name||'')+'" placeholder="예: 용산이안1차 102동 18층" style="font-size:13px;font-weight:700"></div>'+'<div class="f"><label class="lb">주소</label><input id="f_addr" value="'+esc(d.addr||'')+'" placeholder="예: 서울시 용산구"></div>'+'<div class="row"><div class="f"><label class="lb">💰 거래금액</label><input id="f_ps" value="'+esc(d.priceStr||'')+'" placeholder="예: 18억 8,000"></div>'+'<div class="f"><label class="lb">보증금</label><input id="f_ds" value="'+esc(d.depositStr||'')+'" placeholder="예: 1억"></div></div>'+'<div class="row"><div class="f"><label class="lb">공급면적</label><input id="f_ar" value="'+esc(d.area||'')+'" placeholder="134.16㎡"></div>'+'<div class="f"><label class="lb">공급(평)</label><input id="f_ap" value="'+esc(d.areaPyung||'')+'" placeholder="40.58평"></div>'+'<div class="f"><label class="lb">전용면적</label><input id="f_ae" value="'+esc(d.areaExcl||'')+'" placeholder="107.45㎡"></div>'+'<div class="f"><label class="lb">전용(평)</label><input id="f_aep" value="'+esc(d.areaExclPyung||'')+'" placeholder="32.5평"></div></div>'+'<div class="row"><div class="f sm"><label class="lb">해당층</label><input id="f_fl" value="'+esc(d.floor||'')+'" placeholder="18"></div>'+'<div class="f sm"><label class="lb">총층</label><input id="f_tfl" value="'+esc(d.totalFloor||'')+'" placeholder="24"></div>'+'<div class="f"><label class="lb">방향</label><input id="f_dir" value="'+esc(d.direction||'')+'" placeholder="남동향"></div>'+'<div class="f sm"><label class="lb">방/욕실</label><input id="f_rb" value="'+(d.room&&d.bath?d.room+'/'+d.bath:(d.room||''))+'" placeholder="3/2"></div></div>'+'<div class="row"><div class="f"><label class="lb">주차</label><input id="f_pk" value="'+esc(d.parking||'')+'" placeholder="450대"></div>'+'<div class="f sm"><label class="lb">관리비</label><input id="f_mg" value="'+esc(d.manage||'')+'" placeholder="25만원"></div>'+'<div class="f"><label class="lb">입주가능일</label><input id="f_mv" value="'+esc(d.moveIn||'')+'" placeholder="즉시입주"></div></div>'+'<div class="row"><div class="f"><label class="lb">현관구조</label><input id="f_st" value="'+esc(d.structureType||'')+'" placeholder="복합식"></div>'+'<div class="f"><label class="lb">난방</label><input id="f_ht" value="'+esc(d.heatType||'')+'" placeholder="개별난방/도시가스"></div></div>'+'</div></div></div>'+'<div>'+'<div class="card"><div class="ch">📝 매물특징 / 설명</div><div class="cb">'+'<div class="f"><label class="lb">매물특징</label><input id="f_ft" value="'+esc(d.features||'')+'" placeholder="즉시입주, 조망럭, 교통편리"></div>'+'<div class="f"><label class="lb">매물설명</label>'+'<textarea id="f_desc" style="min-height:90px" placeholder="** 공동 가능&#10;** 즉시 입주">'+esc(d.desc||'')+'</textarea></div>'+'</div></div>'+'<div class="card"><div class="ch">🏢 중개사</div><div class="cb">'+'<div class="row"><div class="f w2"><label class="lb">중개사무소명</label><input id="f_ag" value="'+esc(d.agentName||'')+'" placeholder="예: 럭셔리앤하우스"></div>'+'<div class="f w2"><label class="lb">전화번호</label><input id="f_at" value="'+esc(d.agentTel||'')+'" placeholder="예: 02-6925-1330"></div></div>'+'<div class="row"><div class="f"><label class="lb">담당자</label><input id="f_ap2" value="'+esc(d.agentPerson||'')+'" placeholder="예: 홍길동"></div>'+'<div class="f w2"><label class="lb">중개보수 메모</label><input id="f_cm" value="'+esc(d.commissionNote||'')+'" placeholder="예: 최대 1,316만원(VAT별도)"></div></div>'+'</div></div>'+'<div class="card"><div class="ch">🧮 중개보수 · 취득세 · 보유세 계산기</div><div class="cb">'+'<div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span class="lb" style="width:58px;flex-shrink:0">매매가(만원)</span>'+'<input id="c_price" type="number" oninput="calcAll()" placeholder="예: 188000" style="width:130px" value="'+(d.price||'')+'"><span id="c_disp" style="font-size:11px;color:#8a8f9a">'+(d.price?fw(d.price):'')+'</span></div>'+'<div style="display:flex;gap:8px;align-items:center"><span class="lb" style="width:58px;flex-shrink:0">거래유형</span>'+'<select id="c_type" onchange="calcAll()" style="width:80px">'+['매매','전세','월세'].map(t=>'<option'+(d.tradeType===t?' selected':'')+'>'+t+'</option>').join('')+'</select></div>'+'<div id="c_result"></div>'+'</div></div>'+'<div style="display:flex;gap:8px;padding-bottom:16px">'+'<button class="btn-ok" onclick="saveNew()">💾 임장노트 저장</button>'+'<button onclick="cancelForm()">취소</button>'+'</div></div></div>';
+}
+
+function calcAll(){
+  const p=parseFloat(document.getElementById('c_price')?.value)||0;
+  const t=document.getElementById('c_type')?.value||'매매';
+  const disp=document.getElementById('c_disp'),res=document.getElementById('c_result');
+  if(disp)disp.textContent=p?fw(p):'';
+  if(!res)return;
+  const rows=calcR(p,t);
+  if(!rows.length){res.innerHTML='';return;}
+  res.innerHTML='<div class="calc-grid">'+rows.map(r=>'<div class="cr'+(r.tot?' tot':'')+'"><div class="cr-lb">'+r.l+'</div><div class="cr-val">'+fw(r.v)+'</div>'+(r.s?'<div class="cr-sub">'+r.s+'</div>':'')+'</div>').join('')+'</div>';
+}
+
+function g(id){return(document.getElementById(id)?.value||'').trim();}
+function saveNew(){
+  if(!g('f_name')){alert('단지/매물명을 입력해주세요');return;}
+  const no=g('f_no').replace(/\D/g,'');
+  const rb=g('f_rb').split('/');
+  const item={no,name:g('f_name'),addr:g('f_addr'),tradeType:g('f_tt'),priceStr:g('f_ps'),depositStr:g('f_ds'),price:parseFloat(document.getElementById('c_price')?.value)||0,area:g('f_ar'),areaPyung:g('f_ap'),areaExcl:g('f_ae'),areaExclPyung:g('f_aep'),floor:g('f_fl'),totalFloor:g('f_tfl'),direction:g('f_dir'),room:rb[0]||'',bath:rb[1]||'',parking:g('f_pk'),manage:g('f_mg'),moveIn:g('f_mv'),features:g('f_ft'),desc:g('f_desc'),structureType:g('f_st'),heatType:g('f_ht'),agentName:g('f_ag'),agentTel:g('f_at'),agentPerson:g('f_ap2'),commissionNote:g('f_cm'),imlang:false,date:new Date().toLocaleDateString('ko'),naverUrl:no?nl(no):'',photoUrl:no?pl(no):''};
+  const dup=no?saved.findIndex(s=>s.no===no):-1;
+  if(dup>=0){if(!confirm('매물번호 '+no+' 이미 저장됨. 덮어쓸까요?'))return;item.imlang=saved[dup].imlang;saved[dup]=item;selIdx=dup;}
+  else{saved.unshift(item);selIdx=0;}
+  sv();renderList();showDetail(saved[selIdx]);
+}
+
+function showDetail(item){
+  selIdx=saved.indexOf(item);renderList();
+  const idx=selIdx;
+  const ps=item.tradeType==='월세'?'월세 보증'+(item.depositStr||'-')+'/'+(item.priceStr||'-'):(item.tradeType||'')+' '+(item.priceStr||'');
+  const dRows=calcR(item.price,item.tradeType);
+  const tags=[item.addr&&'📍 '+item.addr,item.area&&'📐 공급 '+item.area+(item.areaPyung?' ('+item.areaPyung+')':''),item.floor&&'🏢 '+item.floor+'/'+(item.totalFloor||'?')+'층',item.direction&&'🧭 '+item.direction].filter(Boolean);
+  document.getElementById('mainBody').innerHTML=
+  '<div class="card">'+'<div style="padding:12px 14px;border-bottom:1px solid #e0e3e9">'+'<div style="font-size:10px;color:#8a8f9a;margin-bottom:3px">🏘 '+esc(item.tradeType||'')+' · '+(item.date||'')+' '+(item.imlang?'<span style="color:#16733d;font-weight:700">✅ 임장완료</span>':'<span style="color:#8a8f9a">⬜ 미완</span>')+'</div>'+'<div class="prop-name">'+esc(item.name||'')+'</div>'+'<div class="prop-price">'+esc(ps)+'</div>'+(item.no?'<div style="display:flex;gap:6px;align-items:center;margin-bottom:8px;flex-wrap:wrap">'+'<a href="'+nl(item.no)+'" target="_blank" class="lnk lnk-n">🔗 네이버페이 부동산</a>'+'<a href="'+pl(item.no)+'" target="_blank" class="lnk lnk-p">📸 사진 보기</a>'+'</div>':'')+
+  '<div style="display:flex;gap:5px;flex-wrap:wrap">'+tags.map(t=>'<span class="tag">'+esc(t)+'</span>').join('')+'</div>'+'</div>'+'<div class="ic-grid">'+[['공급/전용',(item.area||'-')+'/'+(item.areaExcl||'-')],['방수/욕실수',(item.room||'-')+'/'+(item.bath||'-')+'개'],['관리비',item.manage||'-'],['방향',item.direction||'-'],['현관/난방',(item.structureType||'-')+' / '+(item.heatType||'-')],['입주가능일',item.moveIn||'-'],['주차',item.parking||'-']].map(([l,v],i)=>
+  '<div class="ic'+(i%2===1?' ev':'')+'"><div class="ic-lb">'+l+'</div><div class="ic-val"><span>'+esc(v)+'</span><button class="cp" onclick="navigator.clipboard.writeText(\''+escj(v)+'\')">복사</button></div></div>').join('')+'</div>'+(item.features?'<div class="sec">매물특징</div><div style="padding:8px 13px;font-size:12px">'+esc(item.features)+'</div>':'')+(item.desc?'<div class="sec">매물설명</div><div style="padding:10px 13px;font-size:12px;line-height:1.9">'+item.desc.split('\n').filter(l=>l.trim()).map(l=>'<div style="display:flex;gap:6px"><span style="color:#1a5fa8;font-weight:700;flex-shrink:0">**</span><span>'+esc(l.replace(/^\*+\s*/,'').trim())+'</span></div>').join('')+'</div>':'')+'<div class="sec">중개사 정보</div>'+'<div class="ic-grid">'+[['중개사무소',item.agentName],['전화번호',item.agentTel],['담당자',item.agentPerson],['중개보수메모',item.commissionNote]].filter(([,v])=>v).map(([l,v],i)=>'<div class="ic'+(i%2===1?' ev':'')+'"><div class="ic-lb">'+l+'</div><div class="ic-val"><span>'+esc(v)+'</span><button class="cp" onclick="navigator.clipboard.writeText(\''+escj(v)+'\')">복사</button></div></div>').join('')+'</div>'+(item.price&&dRows.length?'<div class="sec">💰 비용 계산 (자동)</div><div style="margin:8px 13px"><div class="calc-grid">'+dRows.map(r=>'<div class="cr'+(r.tot?' tot':'')+'"><div class="cr-lb">'+r.l+'</div><div class="cr-val">'+fw(r.v)+'</div>'+(r.s?'<div class="cr-sub">'+r.s+'</div>':'')+'</div>').join('')+'</div></div>':'')+'<div style="padding:10px 13px;display:flex;gap:6px;flex-wrap:wrap;align-items:center;border-top:1px solid #e0e3e9">'+'<button onclick="navigator.clipboard.writeText(getAllText('+idx+'))">📋 전체복사</button>'+'<button onclick="editItem('+idx+')">✏️ 수정</button>'+'<label style="display:flex;align-items:center;gap:4px;font-size:11px;cursor:pointer;margin-left:auto">'+'<input type="checkbox" '+(item.imlang?'checked':'')+' onchange="togIml('+idx+')" style="accent-color:#16733d;width:auto;cursor:pointer">임장완료'+'</label>'+'<button onclick="delItem('+idx+')" style="color:#c0392b;border-color:#c0392b">🗑 삭제</button>'+'</div>'+'</div>';
+}
+
+function getAllText(idx){
+  const s=saved[idx];
+  const ps=s.tradeType==='월세'?'월세 보증'+s.depositStr+'/'+s.priceStr:s.tradeType+' '+s.priceStr;
+  return [s.no&&'매물번호: '+s.no,'📌 '+s.name,s.addr&&'📍 '+s.addr,'💰 '+ps,s.area&&'📐 공급 '+s.area+' / 전용 '+(s.areaExcl||'-'),'🏢 '+(s.floor||'-')+'/'+(s.totalFloor||'-')+'층 | 🧭 '+(s.direction||'-')+' | 🛏 '+(s.room||'-')+'/'+(s.bath||'-'),s.parking&&'🚗 '+s.parking,s.manage&&'🧾 관리비 '+s.manage,s.moveIn&&'🔑 입주 '+s.moveIn,s.features&&'\n🏷 '+s.features,s.desc&&'\n📝 매물설명:\n'+s.desc,'\n── 중개사 ──',[s.agentName,s.agentTel].filter(Boolean).join(' | '),s.commissionNote&&'중개보수: '+s.commissionNote,s.naverUrl&&'\n🔗 '+s.naverUrl,s.photoUrl&&'📸 사진: '+s.photoUrl,'\n임장: '+(s.imlang?'✅ 완료':'⬜ 미완')].filter(Boolean).join('\n');
+}
+
+function exportCSV(){
+  if(!saved.length){alert('저장된 매물이 없습니다');return;}
+  const h='임장완료,매물번호,단지명,주소,거래유형,거래금액,공급면적,전용면적,해당층,총층,방향,방수,욕실수,주차,관리비,입주가능일,매물특징,매물설명,중개사,전화번호,담당자,중개보수메모,네이버링크,사진링크,저장일';
+  const rows=saved.map(s=>[s.imlang?'완료':'미완',s.no,s.name,s.addr,s.tradeType,s.priceStr,s.area,s.areaExcl,s.floor,s.totalFloor,s.direction,s.room,s.bath,s.parking,s.manage,s.moveIn,s.features,s.desc,s.agentName,s.agentTel,s.agentPerson,s.commissionNote,s.naverUrl,s.photoUrl,s.date].map(v=>'"'+String(v||'').replace(/"/g,'""')+'"').join(','));
+  const csv='\uFEFF'+h+'\n'+rows.join('\n');
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='임장노트_'+new Date().toLocaleDateString('ko').replace(/\./g,'').replace(/ /g,'')+'.csv';a.click();
+}
+
+renderList();
+</script>
+</body>
+</html>
